@@ -1,10 +1,8 @@
-import database
 import sqlite3
-
-database.init_db()
+from datetime import date
 
 conn = sqlite3.connect("habits.db")
-cursor = conn.cursor()
-cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
-print(cursor.fetchall())
+conn.execute("UPDATE habits SET created_date = ? WHERE created_date IS NULL", (date.today().isoformat(),))
+conn.commit()
 conn.close()
+print("Backfilled.")
